@@ -71,3 +71,75 @@ public IList<string> LetterCombinations(string digits)
 
 ### Usage
 This code can be used in applications that involve generating all possible strings or sequences from a given set of options, such as creating word combinations, auto-suggestions, and similar use cases.
+
+---------------------------------
+
+
+
+### Another Solution Using Recursive function
+
+## Solution Explanation
+
+### Overview
+This solution utilizes recursive backtracking to generate all possible combinations. The `BackTracking` function is called recursively to build up each combination by iterating through letters mapped to each digit.
+
+### Code
+
+```csharp
+public IList<string> LetterCombinations(string digits)
+{
+    Dictionary<char, string> mappings = new Dictionary<char, string>()
+        {
+            { '2', "abc" },
+            { '3', "def" },
+            { '4', "ghi" },
+            { '5', "jkl" },
+            { '6', "mno" },
+            { '7', "pqrs" },
+            { '8', "tuv" },
+            { '9', "wxyz" }
+        };
+
+    if (!string.IsNullOrEmpty(digits))
+        BackTracking(0, digits, mappings, "");
+    
+    return result;
+}
+
+public void BackTracking(int index, string digits, Dictionary<char, string> mappings, string currentString)
+{
+    if (currentString.Length == digits.Length)
+    {
+        result.Add(currentString);
+        return;
+    }
+
+    foreach (var letter in mappings[digits[index]])
+    {
+        currentString += letter;
+        BackTracking(index + 1, digits, mappings, currentString);
+        currentString = currentString.Substring(0, currentString.Length - 1);  // Backtrack to try the next letter
+    }
+}
+```
+
+### Explanation of the Code
+
+1. **Mappings Initialization**: A dictionary `mappings` stores letter mappings for each digit from `2` to `9`.
+2. **Recursive Backtracking Setup**: The `BackTracking` function is called with initial values if `digits` is not empty.
+3. **Base Case**: Inside `BackTracking`, if `currentString` has the same length as `digits`, the combination is complete and is added to `result`.
+4. **Recursive Step**: For each letter associated with the current digit:
+   - Append the letter to `currentString`.
+   - Call `BackTracking` with the next index.
+   - Backtrack by removing the last character to explore other possible letters for that position.
+
+5. **Backtracking Mechanism**: After each recursive call, `currentString` is reverted by removing the last added letter, allowing other paths to be explored without interference from previous choices.
+
+### Complexity Analysis
+- **Time Complexity**: \(O(3^N \times 4^M)\), where \(N\) is the number of digits with three letters (like `2`, `3`, `4`, etc.) and \(M\) is the number of digits with four letters (like `7` and `9`).
+- **Space Complexity**: \(O(3^N \times 4^M)\), which is the space required to store all possible combinations in `result`.
+
+### Edge Cases
+- **Empty Input**: If `digits` is an empty string, the function returns an empty list as no combinations are possible.
+- **Invalid Characters**: If `digits` contains characters other than `2` to `9`, behavior is undefined and may raise an error.
+
