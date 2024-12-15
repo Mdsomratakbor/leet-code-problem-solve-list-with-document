@@ -1,0 +1,96 @@
+# LeetCode Problem: Make the String Great
+
+This repository contains a solution to the LeetCode problem [Make The String Great](https://leetcode.com/problems/make-the-string-great/).
+
+## Problem Description
+
+You are given a string `s`. You need to repeatedly remove adjacent characters in the string that are the same letter but differ in case. For example, `aA` or `zZ` should be removed. This process should be repeated until no such pair exists, and you should return the resulting string.
+
+The solution is implemented using a **stack-based approach** for efficient removal of adjacent pairs.
+
+### Example 1:
+Input: `s = "leEeetcode"`
+Output: `"leetcode"`
+Explanation: "leEeetcode" -> "leetcode"
+
+### Example 2:
+Input: `s = "abBAcC"`
+Output: `""`
+Explanation: "abBAcC" -> "" (all characters are removed)
+
+### Example 3:
+Input: `s = "sO"`
+Output: `"sO"`
+Explanation: "sO" -> "sO" (no characters are removed)
+
+## Approach
+
+We use a **stack** to solve the problem efficiently:
+1. Iterate through each character of the string.
+2. For each character, check if it forms an adjacent pair with the character at the top of the stack (i.e., they differ in case but are the same letter).
+3. If they form an adjacent pair, pop the character from the stack.
+4. If they do not form an adjacent pair, push the current character onto the stack.
+5. Finally, the stack will contain the final string with no adjacent pairs, which is then converted to a string and returned.
+
+### Time Complexity:
+- **O(n)** where `n` is the length of the input string. We process each character exactly once and perform constant-time operations for each.
+
+### Space Complexity:
+- **O(n)** for the stack used to store the characters.
+
+## Solution Code
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace LeetCodeProblems
+{
+    internal class Make_The_String_Great
+    {
+        public string MakeGood(string s)
+        {
+            Stack<char> stack = new Stack<char>();
+
+            foreach (char c in s)
+            {
+                if (stack.Count > 0 && Math.Abs(stack.Peek() - c) == 32)
+                {
+                    stack.Pop();
+                }
+                else
+                {
+                    stack.Push(c);
+                }
+            }
+
+            return new string(stack.Reverse().ToArray());
+        }
+    }
+}
+```
+
+## How to Run the Code
+
+1. Clone this repository to your local machine:
+
+   ```bash
+   git clone https://github.com/yourusername/LeetCodeProblems.git
+   ```
+
+2. Open the project in your IDE or text editor (e.g., Visual Studio or Visual Studio Code).
+
+3. Compile and run the code. You can test the solution with different inputs by modifying the main method to pass in different strings.
+
+```csharp
+class Program
+{
+    static void Main(string[] args)
+    {
+        Make_The_String_Great solution = new Make_The_String_Great();
+        string result = solution.MakeGood("leEeetcode");
+        Console.WriteLine(result);  // Output: "leetcode"
+    }
+}
+```
